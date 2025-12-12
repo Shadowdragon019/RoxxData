@@ -1,0 +1,1861 @@
+{}
+	aquifers_enabled true
+	default_block {}
+		Name stone
+	default_fluid {}
+		Name water
+		Properties {}
+			level 0
+	disable_mob_generation false
+	legacy_random_source false
+	noise {}
+		height 384
+		min_y -64
+		size_horizontal 1
+		size_vertical 2
+	noise_router {}
+		barrier {}
+			type noise
+			noise aquifer_barrier
+			xz_scale 1.0
+			y_scale 0.5
+		continents overworld/continents
+		depth overworld/depth
+		erosion overworld/erosion
+		final_density {}
+			type min
+			argument1 {}
+				type squeeze
+				argument {}
+					type mul
+					argument1 0.64
+					argument2 {}
+						type interpolated
+						argument {}
+							type blend_density
+							argument {}
+								type add
+								argument1 0.1171875
+								argument2 {}
+									type mul
+									argument1 {}
+										type y_clamped_gradient
+										from_value 0.0
+										from_y -64
+										to_value 1.0
+										to_y -40
+									argument2 {}
+										type add
+										argument1 -0.1171875
+										argument2 {}
+											type add
+											argument1 -0.078125
+											argument2 {}
+												type mul
+												argument1 {}
+													type y_clamped_gradient
+													from_value 1.0
+													from_y 240
+													to_value 0.0
+													to_y 256
+												argument2 {}
+													type add
+													argument1 0.078125
+													argument2 {}
+														type range_choice
+														input overworld/sloped_cheese
+														max_exclusive 1.5625
+														min_inclusive -1000000.0
+														when_in_range {}
+															type min
+															argument1 overworld/sloped_cheese
+															argument2 {}
+																type mul
+																argument1 5.0
+																argument2 overworld/caves/entrances
+														when_out_of_range {}
+															type max
+															argument1 {}
+																type min
+																argument1 {}
+																	type min
+																	argument1 {}
+																		type add
+																		argument1 {}
+																			type mul
+																			argument1 4.0
+																			argument2 {}
+																				type square
+																				argument {}
+																					type noise
+																					noise cave_layer
+																					xz_scale 1.0
+																					y_scale 8.0
+																		argument2 {}
+																			type add
+																			argument1 {}
+																				type clamp
+																				input {}
+																					type add
+																					argument1 0.27
+																					argument2 {}
+																						type noise
+																						noise cave_cheese
+																						xz_scale 1.0
+																						y_scale 0.6666666666666666
+																				max 1.0
+																				min -1.0
+																			argument2 {}
+																				type clamp
+																				input {}
+																					type add
+																					argument1 1.5
+																					argument2 {}
+																						type mul
+																						argument1 -0.64
+																						argument2 overworld/sloped_cheese
+																				max 0.5
+																				min 0.0
+																	argument2 overworld/caves/entrances
+																argument2 {}
+																	type add
+																	argument1 overworld/caves/spaghetti_2d
+																	argument2 overworld/caves/spaghetti_roughness_function
+															argument2 {}
+																type range_choice
+																input overworld/caves/pillars
+																max_exclusive 0.03
+																min_inclusive -1000000.0
+																when_in_range -1000000.0
+																when_out_of_range overworld/caves/pillars
+			argument2 overworld/caves/noodle
+		fluid_level_floodedness {}
+			type noise
+			noise aquifer_fluid_level_floodedness
+			xz_scale 1.0
+			y_scale 0.67
+		fluid_level_spread {}
+			type noise
+			noise aquifer_fluid_level_spread
+			xz_scale 1.0
+			y_scale 0.7142857142857143
+		lava {}
+			type noise
+			noise aquifer_lava
+			xz_scale 1.0
+			y_scale 1.0
+		preliminary_surface_level {}
+			type find_top_surface
+			cell_height 8
+			density {}
+				type add
+				argument1 -0.390625
+				argument2 {}
+					type add
+					argument1 0.1171875
+					argument2 {}
+						type mul
+						argument1 {}
+							type y_clamped_gradient
+							from_value 0.0
+							from_y -64
+							to_value 1.0
+							to_y -40
+						argument2 {}
+							type add
+							argument1 -0.1171875
+							argument2 {}
+								type add
+								argument1 -0.078125
+								argument2 {}
+									type mul
+									argument1 {}
+										type y_clamped_gradient
+										from_value 1.0
+										from_y 240
+										to_value 0.0
+										to_y 256
+									argument2 {}
+										type add
+										argument1 0.078125
+										argument2 {}
+											type clamp
+											input {}
+												type add
+												argument1 -0.703125
+												argument2 {}
+													type mul
+													argument1 4.0
+													argument2 {}
+														type quarter_negative
+														argument {}
+															type mul
+															argument1 {}
+																type add
+																argument1 {}
+																	type y_clamped_gradient
+																	from_value 1.5
+																	from_y -64
+																	to_value -1.5
+																	to_y 320
+																argument2 {}
+																	type cache_2d
+																	argument overworld/offset
+															argument2 {}
+																type cache_2d
+																argument overworld/factor
+											max 64.0
+											min -64.0
+			lower_bound -64
+			upper_bound {}
+				type clamp
+				input {}
+					type add
+					argument1 128.0
+					argument2 {}
+						type mul
+						argument1 -128.0
+						argument2 {}
+							type add
+							argument1 {}
+								type mul
+								argument1 0.2734375
+								argument2 {}
+									type invert
+									argument {}
+										type cache_2d
+										argument overworld/factor
+							argument2 {}
+								type mul
+								argument1 -1.0
+								argument2 {}
+									type cache_2d
+									argument overworld/offset
+				max 320.0
+				min -40.0
+		ridges overworld/ridges
+		temperature {}
+			type shifted_noise
+			noise temperature
+			shift_x shift_x
+			shift_y 0.0
+			shift_z shift_z
+			xz_scale 0.25
+			y_scale 0.0
+		vegetation {}
+			type shifted_noise
+			noise vegetation
+			shift_x shift_x
+			shift_y 0.0
+			shift_z shift_z
+			xz_scale 0.25
+			y_scale 0.0
+		vein_gap {}
+			type noise
+			noise ore_gap
+			xz_scale 1.0
+			y_scale 1.0
+		vein_ridged {}
+			type add
+			argument1 -0.07999999821186066
+			argument2 {}
+				type max
+				argument1 {}
+					type abs
+					argument {}
+						type interpolated
+						argument {}
+							type range_choice
+							input y
+							max_exclusive 51.0
+							min_inclusive -60.0
+							when_in_range {}
+								type noise
+								noise ore_vein_a
+								xz_scale 4.0
+								y_scale 4.0
+							when_out_of_range 0.0
+				argument2 {}
+					type abs
+					argument {}
+						type interpolated
+						argument {}
+							type range_choice
+							input y
+							max_exclusive 51.0
+							min_inclusive -60.0
+							when_in_range {}
+								type noise
+								noise ore_vein_b
+								xz_scale 4.0
+								y_scale 4.0
+							when_out_of_range 0.0
+		vein_toggle {}
+			type interpolated
+			argument {}
+				type range_choice
+				input y
+				max_exclusive 51.0
+				min_inclusive -60.0
+				when_in_range {}
+					type noise
+					noise ore_veininess
+					xz_scale 1.5
+					y_scale 1.5
+				when_out_of_range 0.0
+	ore_veins_enabled true
+	sea_level 63
+	spawn_target []
+		{}
+			continentalness []
+				-0.11
+				1.0
+			depth 0.0
+			erosion []
+				-1.0
+				1.0
+			humidity []
+				-1.0
+				1.0
+			offset 0.0
+			temperature []
+				-1.0
+				1.0
+			weirdness []
+				-1.0
+				-0.16
+		{}
+			continentalness []
+				-0.11
+				1.0
+			depth 0.0
+			erosion []
+				-1.0
+				1.0
+			humidity []
+				-1.0
+				1.0
+			offset 0.0
+			temperature []
+				-1.0
+				1.0
+			weirdness []
+				0.16
+				1.0
+	surface_rule {}
+		type sequence
+		sequence []
+			{}
+				type condition
+				if_true {}
+					type vertical_gradient
+					false_at_and_above {}
+						above_bottom 5
+					random_name bedrock_floor
+					true_at_and_below {}
+						above_bottom 0
+				then_run {}
+					type block
+					result_state {}
+						Name bedrock
+			{}
+				type condition
+				if_true {}
+					type above_preliminary_surface
+				then_run {}
+					type sequence
+					sequence []
+						{}
+							type condition
+							if_true {}
+								type stone_depth
+								add_surface_depth false
+								offset 0
+								secondary_depth_range 0
+								surface_type floor
+							then_run {}
+								type sequence
+								sequence []
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												wooded_badlands
+										then_run {}
+											type condition
+											if_true {}
+												type y_above
+												add_stone_depth false
+												anchor {}
+													absolute 97
+												surface_depth_multiplier 2
+											then_run {}
+												type sequence
+												sequence []
+													{}
+														type condition
+														if_true {}
+															type noise_threshold
+															max_threshold -0.5454
+															min_threshold -0.909
+															noise surface
+														then_run {}
+															type block
+															result_state {}
+																Name coarse_dirt
+													{}
+														type condition
+														if_true {}
+															type noise_threshold
+															max_threshold 0.1818
+															min_threshold -0.1818
+															noise surface
+														then_run {}
+															type block
+															result_state {}
+																Name coarse_dirt
+													{}
+														type condition
+														if_true {}
+															type noise_threshold
+															max_threshold 0.909
+															min_threshold 0.5454
+															noise surface
+														then_run {}
+															type block
+															result_state {}
+																Name coarse_dirt
+													{}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name grass_block
+																		Properties {}
+																			snowy false
+															{}
+																type block
+																result_state {}
+																	Name dirt
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												swamp
+										then_run {}
+											type condition
+											if_true {}
+												type y_above
+												add_stone_depth false
+												anchor {}
+													absolute 62
+												surface_depth_multiplier 0
+											then_run {}
+												type condition
+												if_true {}
+													type not
+													invert {}
+														type y_above
+														add_stone_depth false
+														anchor {}
+															absolute 63
+														surface_depth_multiplier 0
+												then_run {}
+													type condition
+													if_true {}
+														type noise_threshold
+														max_threshold 1.7976931348623157E308
+														min_threshold 0.0
+														noise surface_swamp
+													then_run {}
+														type block
+														result_state {}
+															Name water
+															Properties {}
+																level 0
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												mangrove_swamp
+										then_run {}
+											type condition
+											if_true {}
+												type y_above
+												add_stone_depth false
+												anchor {}
+													absolute 60
+												surface_depth_multiplier 0
+											then_run {}
+												type condition
+												if_true {}
+													type not
+													invert {}
+														type y_above
+														add_stone_depth false
+														anchor {}
+															absolute 63
+														surface_depth_multiplier 0
+												then_run {}
+													type condition
+													if_true {}
+														type noise_threshold
+														max_threshold 1.7976931348623157E308
+														min_threshold 0.0
+														noise surface_swamp
+													then_run {}
+														type block
+														result_state {}
+															Name water
+															Properties {}
+																level 0
+						{}
+							type condition
+							if_true {}
+								type biome
+								biome_is []
+									badlands
+									eroded_badlands
+									wooded_badlands
+							then_run {}
+								type sequence
+								sequence []
+									{}
+										type condition
+										if_true {}
+											type stone_depth
+											add_surface_depth false
+											offset 0
+											secondary_depth_range 0
+											surface_type floor
+										then_run {}
+											type sequence
+											sequence []
+												{}
+													type condition
+													if_true {}
+														type y_above
+														add_stone_depth false
+														anchor {}
+															absolute 256
+														surface_depth_multiplier 0
+													then_run {}
+														type block
+														result_state {}
+															Name orange_terracotta
+												{}
+													type condition
+													if_true {}
+														type y_above
+														add_stone_depth true
+														anchor {}
+															absolute 74
+														surface_depth_multiplier 1
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold -0.5454
+																	min_threshold -0.909
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name terracotta
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.1818
+																	min_threshold -0.1818
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name terracotta
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.909
+																	min_threshold 0.5454
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name terracotta
+															{}
+																type bandlands
+												{}
+													type condition
+													if_true {}
+														type water
+														add_stone_depth false
+														offset -1
+														surface_depth_multiplier 0
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type stone_depth
+																	add_surface_depth false
+																	offset 0
+																	secondary_depth_range 0
+																	surface_type ceiling
+																then_run {}
+																	type block
+																	result_state {}
+																		Name red_sandstone
+															{}
+																type block
+																result_state {}
+																	Name red_sand
+												{}
+													type condition
+													if_true {}
+														type not
+														invert {}
+															type hole
+													then_run {}
+														type block
+														result_state {}
+															Name orange_terracotta
+												{}
+													type condition
+													if_true {}
+														type water
+														add_stone_depth true
+														offset -6
+														surface_depth_multiplier -1
+													then_run {}
+														type block
+														result_state {}
+															Name white_terracotta
+												{}
+													type sequence
+													sequence []
+														{}
+															type condition
+															if_true {}
+																type stone_depth
+																add_surface_depth false
+																offset 0
+																secondary_depth_range 0
+																surface_type ceiling
+															then_run {}
+																type block
+																result_state {}
+																	Name stone
+														{}
+															type block
+															result_state {}
+																Name gravel
+									{}
+										type condition
+										if_true {}
+											type y_above
+											add_stone_depth true
+											anchor {}
+												absolute 63
+											surface_depth_multiplier -1
+										then_run {}
+											type sequence
+											sequence []
+												{}
+													type condition
+													if_true {}
+														type y_above
+														add_stone_depth false
+														anchor {}
+															absolute 63
+														surface_depth_multiplier 0
+													then_run {}
+														type condition
+														if_true {}
+															type not
+															invert {}
+																type y_above
+																add_stone_depth true
+																anchor {}
+																	absolute 74
+																surface_depth_multiplier 1
+														then_run {}
+															type block
+															result_state {}
+																Name orange_terracotta
+												{}
+													type bandlands
+									{}
+										type condition
+										if_true {}
+											type stone_depth
+											add_surface_depth true
+											offset 0
+											secondary_depth_range 0
+											surface_type floor
+										then_run {}
+											type condition
+											if_true {}
+												type water
+												add_stone_depth true
+												offset -6
+												surface_depth_multiplier -1
+											then_run {}
+												type block
+												result_state {}
+													Name white_terracotta
+						{}
+							type condition
+							if_true {}
+								type stone_depth
+								add_surface_depth false
+								offset 0
+								secondary_depth_range 0
+								surface_type floor
+							then_run {}
+								type condition
+								if_true {}
+									type water
+									add_stone_depth false
+									offset -1
+									surface_depth_multiplier 0
+								then_run {}
+									type sequence
+									sequence []
+										{}
+											type condition
+											if_true {}
+												type biome
+												biome_is []
+													frozen_ocean
+													deep_frozen_ocean
+											then_run {}
+												type condition
+												if_true {}
+													type hole
+												then_run {}
+													type sequence
+													sequence []
+														{}
+															type condition
+															if_true {}
+																type water
+																add_stone_depth false
+																offset 0
+																surface_depth_multiplier 0
+															then_run {}
+																type block
+																result_state {}
+																	Name air
+														{}
+															type condition
+															if_true {}
+																type temperature
+															then_run {}
+																type block
+																result_state {}
+																	Name ice
+														{}
+															type block
+															result_state {}
+																Name water
+																Properties {}
+																	level 0
+										{}
+											type sequence
+											sequence []
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															frozen_peaks
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type steep
+																then_run {}
+																	type block
+																	result_state {}
+																		Name packed_ice
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.2
+																	min_threshold 0.0
+																	noise packed_ice
+																then_run {}
+																	type block
+																	result_state {}
+																		Name packed_ice
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.025
+																	min_threshold 0.0
+																	noise ice
+																then_run {}
+																	type block
+																	result_state {}
+																		Name ice
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name snow_block
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															snowy_slopes
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type steep
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.6
+																	min_threshold 0.35
+																	noise powder_snow
+																then_run {}
+																	type condition
+																	if_true {}
+																		type water
+																		add_stone_depth false
+																		offset 0
+																		surface_depth_multiplier 0
+																	then_run {}
+																		type block
+																		result_state {}
+																			Name powder_snow
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name snow_block
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															jagged_peaks
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type steep
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name snow_block
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															grove
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.6
+																	min_threshold 0.35
+																	noise powder_snow
+																then_run {}
+																	type condition
+																	if_true {}
+																		type water
+																		add_stone_depth false
+																		offset 0
+																		surface_depth_multiplier 0
+																	then_run {}
+																		type block
+																		result_state {}
+																			Name powder_snow
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name snow_block
+												{}
+													type sequence
+													sequence []
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	stony_peaks
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type noise_threshold
+																			max_threshold 0.0125
+																			min_threshold -0.0125
+																			noise calcite
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name calcite
+																	{}
+																		type block
+																		result_state {}
+																			Name stone
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	stony_shore
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type noise_threshold
+																			max_threshold 0.05
+																			min_threshold -0.05
+																			noise gravel
+																		then_run {}
+																			type sequence
+																			sequence []
+																				{}
+																					type condition
+																					if_true {}
+																						type stone_depth
+																						add_surface_depth false
+																						offset 0
+																						secondary_depth_range 0
+																						surface_type ceiling
+																					then_run {}
+																						type block
+																						result_state {}
+																							Name stone
+																				{}
+																					type block
+																					result_state {}
+																						Name gravel
+																	{}
+																		type block
+																		result_state {}
+																			Name stone
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	windswept_hills
+															then_run {}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.12121212121212122
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	warm_ocean
+																	beach
+																	snowy_beach
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type stone_depth
+																			add_surface_depth false
+																			offset 0
+																			secondary_depth_range 0
+																			surface_type ceiling
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name sandstone
+																	{}
+																		type block
+																		result_state {}
+																			Name sand
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	desert
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type stone_depth
+																			add_surface_depth false
+																			offset 0
+																			secondary_depth_range 0
+																			surface_type ceiling
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name sandstone
+																	{}
+																		type block
+																		result_state {}
+																			Name sand
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	dripstone_caves
+															then_run {}
+																type block
+																result_state {}
+																	Name stone
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															windswept_savanna
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.21212121212121213
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold -0.06060606060606061
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name coarse_dirt
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															windswept_gravelly_hills
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.24242424242424243
+																	noise surface
+																then_run {}
+																	type sequence
+																	sequence []
+																		{}
+																			type condition
+																			if_true {}
+																				type stone_depth
+																				add_surface_depth false
+																				offset 0
+																				secondary_depth_range 0
+																				surface_type ceiling
+																			then_run {}
+																				type block
+																				result_state {}
+																					Name stone
+																		{}
+																			type block
+																			result_state {}
+																				Name gravel
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.12121212121212122
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold -0.12121212121212122
+																	noise surface
+																then_run {}
+																	type sequence
+																	sequence []
+																		{}
+																			type condition
+																			if_true {}
+																				type water
+																				add_stone_depth false
+																				offset 0
+																				surface_depth_multiplier 0
+																			then_run {}
+																				type block
+																				result_state {}
+																					Name grass_block
+																					Properties {}
+																						snowy false
+																		{}
+																			type block
+																			result_state {}
+																				Name dirt
+															{}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type stone_depth
+																			add_surface_depth false
+																			offset 0
+																			secondary_depth_range 0
+																			surface_type ceiling
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name stone
+																	{}
+																		type block
+																		result_state {}
+																			Name gravel
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															old_growth_pine_taiga
+															old_growth_spruce_taiga
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.21212121212121213
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name coarse_dirt
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold -0.11515151515151514
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name podzol
+																		Properties {}
+																			snowy false
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															ice_spikes
+													then_run {}
+														type condition
+														if_true {}
+															type water
+															add_stone_depth false
+															offset 0
+															surface_depth_multiplier 0
+														then_run {}
+															type block
+															result_state {}
+																Name snow_block
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															mangrove_swamp
+													then_run {}
+														type block
+														result_state {}
+															Name mud
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															mushroom_fields
+													then_run {}
+														type block
+														result_state {}
+															Name mycelium
+															Properties {}
+																snowy false
+												{}
+													type sequence
+													sequence []
+														{}
+															type condition
+															if_true {}
+																type water
+																add_stone_depth false
+																offset 0
+																surface_depth_multiplier 0
+															then_run {}
+																type block
+																result_state {}
+																	Name grass_block
+																	Properties {}
+																		snowy false
+														{}
+															type block
+															result_state {}
+																Name dirt
+						{}
+							type condition
+							if_true {}
+								type water
+								add_stone_depth true
+								offset -6
+								surface_depth_multiplier -1
+							then_run {}
+								type sequence
+								sequence []
+									{}
+										type condition
+										if_true {}
+											type stone_depth
+											add_surface_depth false
+											offset 0
+											secondary_depth_range 0
+											surface_type floor
+										then_run {}
+											type condition
+											if_true {}
+												type biome
+												biome_is []
+													frozen_ocean
+													deep_frozen_ocean
+											then_run {}
+												type condition
+												if_true {}
+													type hole
+												then_run {}
+													type block
+													result_state {}
+														Name water
+														Properties {}
+															level 0
+									{}
+										type condition
+										if_true {}
+											type stone_depth
+											add_surface_depth true
+											offset 0
+											secondary_depth_range 0
+											surface_type floor
+										then_run {}
+											type sequence
+											sequence []
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															frozen_peaks
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type steep
+																then_run {}
+																	type block
+																	result_state {}
+																		Name packed_ice
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.2
+																	min_threshold -0.5
+																	noise packed_ice
+																then_run {}
+																	type block
+																	result_state {}
+																		Name packed_ice
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.025
+																	min_threshold -0.0625
+																	noise ice
+																then_run {}
+																	type block
+																	result_state {}
+																		Name ice
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name snow_block
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															snowy_slopes
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type steep
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.58
+																	min_threshold 0.45
+																	noise powder_snow
+																then_run {}
+																	type condition
+																	if_true {}
+																		type water
+																		add_stone_depth false
+																		offset 0
+																		surface_depth_multiplier 0
+																	then_run {}
+																		type block
+																		result_state {}
+																			Name powder_snow
+															{}
+																type condition
+																if_true {}
+																	type water
+																	add_stone_depth false
+																	offset 0
+																	surface_depth_multiplier 0
+																then_run {}
+																	type block
+																	result_state {}
+																		Name snow_block
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															jagged_peaks
+													then_run {}
+														type block
+														result_state {}
+															Name stone
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															grove
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 0.58
+																	min_threshold 0.45
+																	noise powder_snow
+																then_run {}
+																	type condition
+																	if_true {}
+																		type water
+																		add_stone_depth false
+																		offset 0
+																		surface_depth_multiplier 0
+																	then_run {}
+																		type block
+																		result_state {}
+																			Name powder_snow
+															{}
+																type block
+																result_state {}
+																	Name dirt
+												{}
+													type sequence
+													sequence []
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	stony_peaks
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type noise_threshold
+																			max_threshold 0.0125
+																			min_threshold -0.0125
+																			noise calcite
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name calcite
+																	{}
+																		type block
+																		result_state {}
+																			Name stone
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	stony_shore
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type noise_threshold
+																			max_threshold 0.05
+																			min_threshold -0.05
+																			noise gravel
+																		then_run {}
+																			type sequence
+																			sequence []
+																				{}
+																					type condition
+																					if_true {}
+																						type stone_depth
+																						add_surface_depth false
+																						offset 0
+																						secondary_depth_range 0
+																						surface_type ceiling
+																					then_run {}
+																						type block
+																						result_state {}
+																							Name stone
+																				{}
+																					type block
+																					result_state {}
+																						Name gravel
+																	{}
+																		type block
+																		result_state {}
+																			Name stone
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	windswept_hills
+															then_run {}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.12121212121212122
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	warm_ocean
+																	beach
+																	snowy_beach
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type stone_depth
+																			add_surface_depth false
+																			offset 0
+																			secondary_depth_range 0
+																			surface_type ceiling
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name sandstone
+																	{}
+																		type block
+																		result_state {}
+																			Name sand
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	desert
+															then_run {}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type stone_depth
+																			add_surface_depth false
+																			offset 0
+																			secondary_depth_range 0
+																			surface_type ceiling
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name sandstone
+																	{}
+																		type block
+																		result_state {}
+																			Name sand
+														{}
+															type condition
+															if_true {}
+																type biome
+																biome_is []
+																	dripstone_caves
+															then_run {}
+																type block
+																result_state {}
+																	Name stone
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															windswept_savanna
+													then_run {}
+														type condition
+														if_true {}
+															type noise_threshold
+															max_threshold 1.7976931348623157E308
+															min_threshold 0.21212121212121213
+															noise surface
+														then_run {}
+															type block
+															result_state {}
+																Name stone
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															windswept_gravelly_hills
+													then_run {}
+														type sequence
+														sequence []
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.24242424242424243
+																	noise surface
+																then_run {}
+																	type sequence
+																	sequence []
+																		{}
+																			type condition
+																			if_true {}
+																				type stone_depth
+																				add_surface_depth false
+																				offset 0
+																				secondary_depth_range 0
+																				surface_type ceiling
+																			then_run {}
+																				type block
+																				result_state {}
+																					Name stone
+																		{}
+																			type block
+																			result_state {}
+																				Name gravel
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold 0.12121212121212122
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name stone
+															{}
+																type condition
+																if_true {}
+																	type noise_threshold
+																	max_threshold 1.7976931348623157E308
+																	min_threshold -0.12121212121212122
+																	noise surface
+																then_run {}
+																	type block
+																	result_state {}
+																		Name dirt
+															{}
+																type sequence
+																sequence []
+																	{}
+																		type condition
+																		if_true {}
+																			type stone_depth
+																			add_surface_depth false
+																			offset 0
+																			secondary_depth_range 0
+																			surface_type ceiling
+																		then_run {}
+																			type block
+																			result_state {}
+																				Name stone
+																	{}
+																		type block
+																		result_state {}
+																			Name gravel
+												{}
+													type condition
+													if_true {}
+														type biome
+														biome_is []
+															mangrove_swamp
+													then_run {}
+														type block
+														result_state {}
+															Name mud
+												{}
+													type block
+													result_state {}
+														Name dirt
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												warm_ocean
+												beach
+												snowy_beach
+										then_run {}
+											type condition
+											if_true {}
+												type stone_depth
+												add_surface_depth true
+												offset 0
+												secondary_depth_range 6
+												surface_type floor
+											then_run {}
+												type block
+												result_state {}
+													Name sandstone
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												desert
+										then_run {}
+											type condition
+											if_true {}
+												type stone_depth
+												add_surface_depth true
+												offset 0
+												secondary_depth_range 30
+												surface_type floor
+											then_run {}
+												type block
+												result_state {}
+													Name sandstone
+						{}
+							type condition
+							if_true {}
+								type stone_depth
+								add_surface_depth false
+								offset 0
+								secondary_depth_range 0
+								surface_type floor
+							then_run {}
+								type sequence
+								sequence []
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												frozen_peaks
+												jagged_peaks
+										then_run {}
+											type block
+											result_state {}
+												Name stone
+									{}
+										type condition
+										if_true {}
+											type biome
+											biome_is []
+												warm_ocean
+												lukewarm_ocean
+												deep_lukewarm_ocean
+										then_run {}
+											type sequence
+											sequence []
+												{}
+													type condition
+													if_true {}
+														type stone_depth
+														add_surface_depth false
+														offset 0
+														secondary_depth_range 0
+														surface_type ceiling
+													then_run {}
+														type block
+														result_state {}
+															Name sandstone
+												{}
+													type block
+													result_state {}
+														Name sand
+									{}
+										type sequence
+										sequence []
+											{}
+												type condition
+												if_true {}
+													type stone_depth
+													add_surface_depth false
+													offset 0
+													secondary_depth_range 0
+													surface_type ceiling
+												then_run {}
+													type block
+													result_state {}
+														Name stone
+											{}
+												type block
+												result_state {}
+													Name gravel
+			{}
+				type condition
+				if_true {}
+					type vertical_gradient
+					false_at_and_above {}
+						absolute 8
+					random_name deepslate
+					true_at_and_below {}
+						absolute 0
+				then_run {}
+					type block
+					result_state {}
+						Name deepslate
+						Properties {}
+							axis y

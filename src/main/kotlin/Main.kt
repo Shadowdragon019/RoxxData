@@ -5,10 +5,11 @@ import com.google.gson.internal.LazilyParsedNumber
 import com.google.gson.stream.JsonReader
 import java.io.File
 import java.io.FileReader
+import java.io.FileWriter
 
 val PRETTY_GSON = GsonBuilder().setPrettyPrinting().create()!!
 fun main() {
-	test()
+	jsonTests()
 }
 fun test() {
 	val tests = File("src/main/kotlin/test")
@@ -46,7 +47,8 @@ fun jsonTests() {
 	addListTransformer(JsonArray::class.java, JsonArray::isJsonArray, JsonArray::asList)
 	addMapTransformer(JsonObject::class.java, JsonObject::isJsonObject, JsonObject::asMap)
 	val jsonTests = File("src/main/kotlin/json_tests")
-	if (jsonTests.isDirectory) {
+	val outputDirectory = File("src/main/kotlin/json_tests_output")
+	if (jsonTests.isDirectory && outputDirectory.isDirectory) {
 		for (file in jsonTests.listFiles() ?: arrayOf()) {
 			if (file == null) {
 				continue
@@ -56,7 +58,14 @@ fun jsonTests() {
 			}
 			println("--- ${file.name} ---")
 			val json: JsonElement = PRETTY_GSON.fromJson(JsonReader(FileReader(file)), JsonElement::class.java)
-			stringify(json).println()
+			val output = File(outputDirectory, file.nameWithoutExtension)
+			if (!output.exists()) {
+				output.createNewFile()
+			}
+			val string = stringify(json)
+			val writer = FileWriter(output)
+			writer.write(string)
+			writer.close()
 		}
 	}
 }
