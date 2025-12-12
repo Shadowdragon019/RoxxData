@@ -8,23 +8,74 @@ private data class Line(val depth: Int, val tokens: List<String>) {
 		return "$depth | ${tokens.joinToString(" ")}"
 	}
 }
+enum class ListOrMap(val isList: Boolean) {
+	LIST(true),
+	MAP(false);
+}
 private fun parseTokens(lines: List<Line>): Any? {
+	val listOrMaps = mutableListOf<ListOrMap>()
 	var data: Any? = null
 	for (line in lines) {
-		if (line.tokens.size > 2) {
-			error("")
-		} else if (line.tokens.size == 2) {
-			data.deepPut(line.depth, parseToken(line.tokens[0]), parseToken(line.tokens[1]))
-		} else if (line.tokens.size == 1) {
-			if (data == null) {
-				data = parseToken(line.tokens[0])
+		if (line.tokens.isEmpty()) {
+			continue
+		}
+		val depth = line.depth
+		val tokens = line.tokens
+		val tokenCount = tokens.size
+		fun updateListOrMaps(token: String) {
+			if (token == "[]") {
+				if (listOrMaps.size > depth) {
+					listOrMaps.set(depth, ListOrMap.LIST)
+				} else {
+					listOrMaps.add(depth, ListOrMap.LIST)
+				}
+			} else if (token == "{}") {
+				if (listOrMaps.size > depth) {
+					listOrMaps.set(depth, ListOrMap.MAP)
+				} else {
+					listOrMaps.add(depth, ListOrMap.MAP)
+				}
+			}
+		}
+		if (data == null) {
+			if (tokenCount != 1) {
+				error("First line $tokens can only contain one token, contained $tokenCount")
 			} else {
-				data.deepAdd(line.depth, parseToken(line.tokens[0]))
+				val token = tokens[0]
+				if (token == "[]") {
+					listOrMaps.add(depth, ListOrMap.LIST)
+				} else if (token == "{}") {
+					listOrMaps.add(depth, ListOrMap.MAP)
+				}
+				data = parseToken(tokens[0])
+			}
+		} else {
+			val listOrMap = listOrMaps[depth - 1]
+			if (listOrMap.isList) {
+				for (token in line.tokens) {
+					updateListOrMaps(token)
+					data.deepAdd(line.depth, parseToken(token))
+				}
+			} else {
+				var key: String? = null
+				for (token in line.tokens) {
+					if (key == null) {
+						key = token
+					} else {
+						updateListOrMaps(token)
+						data.deepPut(depth, parseToken(key), parseToken(token))
+						key = null
+					}
+				}
+				if (key != null) {
+					error("Key $key does not have associated value")
+				}
 			}
 		}
 	}
 	return data
 }
+
 private fun Any?.deepGet(depth: Int): Any? {
 	if (depth < 2) {
 		return this
