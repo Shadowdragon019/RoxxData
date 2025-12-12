@@ -1,15 +1,13 @@
 package lol.roxxane.roxx_data
-
 import com.google.gson.*
 import com.google.gson.internal.LazilyParsedNumber
 import com.google.gson.stream.JsonReader
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
-
 val PRETTY_GSON = GsonBuilder().setPrettyPrinting().create()!!
 fun main() {
-	jsonTests()
+	test()
 }
 fun test() {
 	val tests = File("src/main/kotlin/test")
@@ -69,7 +67,6 @@ fun jsonTests() {
 		}
 	}
 }
-
 fun Any?.println() {
 	println(this)
 }

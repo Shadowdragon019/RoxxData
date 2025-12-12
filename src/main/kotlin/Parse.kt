@@ -1,5 +1,4 @@
 package lol.roxxane.roxx_data
-
 fun parse(string: String): Any? {
 	return parseTokens(tokenize(string))
 }
@@ -215,7 +214,10 @@ private fun tokenizeQuoted(iterator: ListIterator<Char>, quote: Char): String {
 }
 private fun tokenizeComment(iterator: ListIterator<Char>) {
 	while (iterator.hasNext) {
-		if (iterator.next in "\n<[{") {
+		val next = iterator.next
+		if (next == '\\') {
+			tokenizeBreak(iterator)
+		} else if (next in "<") {
 			return
 		}
 	}

@@ -1,7 +1,5 @@
 @file:Suppress("unused")
-
 package lol.roxxane.roxx_data
-
 interface RoxxDataBoolTransformer {
 	fun roxDataIsBool(): Boolean
 	fun roxDataAsBool(): Boolean
