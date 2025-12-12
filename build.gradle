@@ -1,0 +1,22 @@
+plugins {
+	id 'org.jetbrains.kotlin.jvm' version '2.2.20'
+}
+
+group = 'lol.roxxane.roxx_data'
+version = '1.0-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	testImplementation 'org.jetbrains.kotlin:kotlin-test'
+	implementation 'com.google.code.gson:gson:2.13.2'
+}
+
+test {
+	useJUnitPlatform()
+}
+kotlin {
+	jvmToolchain(22)
+}
