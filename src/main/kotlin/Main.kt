@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package lol.roxxane.roxx_data
 import com.google.gson.*
 import com.google.gson.internal.LazilyParsedNumber
