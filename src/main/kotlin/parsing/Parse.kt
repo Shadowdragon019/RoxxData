@@ -1,4 +1,4 @@
-package lol.roxxane.roxx_data
+package lol.roxxane.roxx_data.parsing
 fun parse(string: String): Any? {
 	return parseTokens(tokenize(string))
 }
@@ -74,7 +74,6 @@ private fun parseTokens(lines: List<Line>): Any? {
 	}
 	return data
 }
-
 private fun Any?.deepGet(depth: Int): Any? {
 	if (depth < 2) {
 		return this
