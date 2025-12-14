@@ -27,6 +27,23 @@ fun test() {
 		}
 	}
 }
+fun commentExamples() {
+	val data = listOf(
+		Comment("Test"),
+		1,
+		2,
+		Comment("69"),
+		mapOf(
+			Comment("Wheeee!!!") to 1,
+			10 to Comment("WHOA"),
+			Comment("A") to Comment("B")
+		)
+	)
+	stringify(data).println()
+	stringify(parse(stringify(data))).println()
+	addCommentTransformer(Pair::class.java) { it.first.toString() + " " + it.second }
+	stringify(1 to 3).println()
+}
 fun jsonTests() {
 	addBoolTransformer(JsonPrimitive::class.java, JsonPrimitive::isBoolean, JsonPrimitive::getAsBoolean)
 	addIntTransformer(JsonPrimitive::class.java, {
