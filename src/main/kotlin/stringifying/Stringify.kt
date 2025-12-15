@@ -1,5 +1,6 @@
 @file:Suppress("unused")
 package lol.roxxane.roxx_data.stringifying
+import lol.roxxane.roxx_data.boolIntDoubleOrNull
 interface RoxxDataBoolTransformer {
 	fun roxDataIsBool(): Boolean
 	fun roxDataAsBool(): Boolean
@@ -99,6 +100,9 @@ fun <T> addMapTransformer(clazz: Class<T>, transformer: (T) -> Map<*, *>) =
 	MAP_TRANSFORMERS.add(Transformer.clazz(clazz, ::_true, transformer))
 fun <T> addCommentTransformer(clazz: Class<T>, transformer: (T) -> String) =
 	COMMENT_TRANSFORMERS.add(CommentTransformer.clazz(clazz, ::_true, transformer))
+private operator fun StringBuilder.plus(any: Any?): StringBuilder = append(any)
+private val StringBuilder.string: String
+	get() = toString()
 fun stringify(any: Any?): String = stringify(any, 0)
 private fun stringify(any: Any?, depth: Int): String {
 	fun tabs(): String = "\t".repeat(depth + 1)
@@ -118,6 +122,10 @@ private fun stringify(any: Any?, depth: Int): String {
 			}
 		}
 		if (!whitespace) {
+			val data: Any? = boolIntDoubleOrNull(any)
+			if (data != null) {
+				return "\"$data\""
+			}
 			return any.replace("\\", "\\\\").replace(">", "\\>").replace("[", "\\[").replace("[", "\\{")
 		}
 		if ('"' !in quotes) {
@@ -206,6 +214,3 @@ private fun stringify(any: Any?, depth: Int): String {
 	}
 	return stringify(any.toString())
 }
-private operator fun StringBuilder.plus(any: Any?): StringBuilder = append(any)
-private val StringBuilder.string: String
-	get() = toString()

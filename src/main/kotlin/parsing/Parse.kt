@@ -1,4 +1,5 @@
 package lol.roxxane.roxx_data.parsing
+import lol.roxxane.roxx_data.boolIntDoubleOrNull
 fun parse(string: String): Any? {
 	return parseTokens(tokenize(string))
 }
@@ -116,15 +117,7 @@ private fun Any?.deepPut(depth: Int, key: Any, value: Any) {
 	}
 }
 private fun parseToken(token: String): Any {
-	var data: Any? = token.toIntOrNull()
-	if (data != null) {
-		return data
-	}
-	data = token.toDoubleOrNull()
-	if (data != null) {
-		return data
-	}
-	data = token.toBooleanStrictOrNull()
+	val data: Any? = boolIntDoubleOrNull(token)
 	if (data != null) {
 		return data
 	}
@@ -133,7 +126,16 @@ private fun parseToken(token: String): Any {
 	} else if (token == "{}") {
 		return mutableMapOf<Any, Any>()
 	}
+	if (token.isEmpty()) { // I don't THINK it can be empty, but I'll error anyways
+		error("Token was empty")
+	}
+	if (token.first() in "`'\"" && token.first() == token.last()) {
+		return token.removeSurrounding(token.first().toString())
+	}
 	return token
+}
+fun publicTokenize(string: String): List<Pair<Int, List<String>>> {
+	return tokenize(string).map { it.depth to it.tokens }.toList()
 }
 private fun tokenize(string: String): List<Line> {
 	val lines = mutableListOf<Line>()
@@ -209,7 +211,7 @@ private fun tokenizeQuoted(iterator: ListIterator<Char>, quote: Char): String {
 			builder + current
 		}
 	}
-	return builder.string
+	return "$quote${builder.string}$quote"
 }
 private fun tokenizeComment(iterator: ListIterator<Char>) {
 	while (iterator.hasNext) {
